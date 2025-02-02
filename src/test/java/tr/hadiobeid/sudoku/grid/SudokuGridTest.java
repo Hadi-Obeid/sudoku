@@ -122,4 +122,33 @@ class SudokuGridTest {
         region = sudokuGrid.getRegion(0, 0);
         assertTrue(Arrays.deepEquals(new char[][]{{'7', '7', '7'}, {'7', '0', '0'}, {'0', '0', '0'}}, region));
     }
+
+    @Test
+    void emptyGridIsIncomplete() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        assertFalse(sudokuGrid.isComplete());
+    }
+
+    @Test
+    void partialGridIsIncomplete() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 8; j++) {
+                sudokuGrid.setCell(i, j, '1');
+            }
+        }
+        assertFalse(sudokuGrid.isComplete());
+
+    }
+
+    @Test
+    void fullGridIsComplete() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                sudokuGrid.setCell(i, j, '1');
+            }
+        }
+        assertTrue(sudokuGrid.isComplete());
+    }
 }

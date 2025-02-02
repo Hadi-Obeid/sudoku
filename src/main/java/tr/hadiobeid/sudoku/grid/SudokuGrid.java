@@ -88,6 +88,23 @@ public class SudokuGrid {
     }
 
     /**
+     * Checks if a grid is complete (no unfilled spaces)
+     * @return If there exists any unfilled spaces ('0') in grid
+     */
+    public boolean isComplete() {
+
+        return Arrays.stream(grid).noneMatch(row -> new String(row).indexOf('0') != -1);
+    }
+
+    /**
+     *
+     * @return If a grid contains any invalid numbers
+     */
+    private boolean gridIsInvalid() {
+        return false;
+    }
+
+    /**
      * @return SudokuState enum for the following states
      *    <ul>
      *        <li>SudokuState.VALID if a grid has empty space with all cells abiding by Sudoku rules</li>
@@ -95,9 +112,17 @@ public class SudokuGrid {
      *        <li>SudokuState.Solved if the grid is valid and has no empty space, therefore it is basically solved</li>
      *    </ul>
      */
-    SudokuState ValidateGrid() {
-       return SudokuState.VALID;
+    public SudokuState ValidateGrid() {
+        if (this.gridIsInvalid()) {
+            return SudokuState.INVALID;
+        }
+
+        if (this.isComplete()) {
+            return SudokuState.SOLVED;
+        }
+        return SudokuState.VALID;
     }
+
 
     public char[][] getGrid() {
         return grid;
