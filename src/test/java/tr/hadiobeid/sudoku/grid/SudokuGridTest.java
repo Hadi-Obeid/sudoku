@@ -1,6 +1,7 @@
 package tr.hadiobeid.sudoku.grid;
 
 import org.junit.jupiter.api.Test;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,4 +74,52 @@ class SudokuGridTest {
         assertThrows(IllegalArgumentException.class, () -> sudokuGrid.setCell(0, 0, '?'));
     }
 
+    @Test
+    void regionShouldReturnSomething() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        char[][] region = sudokuGrid.getRegion(0, 0);
+        assertNotNull(region);
+    }
+
+    @Test
+    void regionShouldThrowOnOutOfBoundsRow() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        assertThrows(IndexOutOfBoundsException.class, () -> sudokuGrid.getRegion(-1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> sudokuGrid.getRegion(9, 0));
+    }
+
+    @Test
+    void regionShouldThrowOnOutOfBoundsCol() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        assertThrows(IndexOutOfBoundsException.class, () -> sudokuGrid.getRegion(0, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> sudokuGrid.getRegion(0, 9));
+    }
+
+    @Test
+    void regionShouldReturnProperRegion() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        char[][] region = sudokuGrid.getRegion(0, 0);
+        assertTrue(Arrays.deepEquals(new char[][]{{'0', '0', '0'}, {'0', '0', '0'}, {'0', '0', '0'}}, region));
+
+        sudokuGrid.setCell(4, 4, '1');
+        region = sudokuGrid.getRegion(4, 4);
+        assertTrue(Arrays.deepEquals(new char[][]{{'0', '0', '0'}, {'0', '1', '0'}, {'0', '0', '0'}}, region));
+
+        sudokuGrid.setCell(3, 4, '1');
+        region = sudokuGrid.getRegion(4, 4);
+        assertTrue(Arrays.deepEquals(new char[][]{{'0', '1', '0'}, {'0', '1', '0'}, {'0', '0', '0'}}, region));
+
+        sudokuGrid.setCell(5, 4, '1');
+        sudokuGrid.setCell(5, 5, '1');
+        region = sudokuGrid.getRegion(4, 4);
+        assertTrue(Arrays.deepEquals(new char[][]{{'0', '1', '0'}, {'0', '1', '0'}, {'0', '1', '1'}}, region));
+
+        sudokuGrid = new SudokuGrid();
+        sudokuGrid.setCell(0, 0, '7');
+        sudokuGrid.setCell(0, 1, '7');
+        sudokuGrid.setCell(0, 2, '7');
+        sudokuGrid.setCell(1, 0, '7');
+        region = sudokuGrid.getRegion(0, 0);
+        assertTrue(Arrays.deepEquals(new char[][]{{'7', '7', '7'}, {'7', '0', '0'}, {'0', '0', '0'}}, region));
+    }
 }

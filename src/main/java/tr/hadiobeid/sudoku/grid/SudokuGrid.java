@@ -64,15 +64,30 @@ public class SudokuGrid {
 
     /**
      * Get a corresponding 3x3 region of a cell
-     * @return A corresponding 3x3 region for a cell at row, col
+     * @return A corresponding 3x3 region for a cell at row, col (including cell at row, col)
+     * @throws IndexOutOfBoundsException if values of row and col would lead to invalid index
      */
+    public char[][] getRegion(int row, int col) throws IndexOutOfBoundsException {
+        // get coordinates of region (top left corner)
+        int region_x = (col / 3) * 3;
+        int region_y = (row / 3) * 3;
 
-    // TODO: Implement this
-    public void getRegion(int row, int col) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+            throw new IndexOutOfBoundsException("Row or col out of bounds");
+        }
+
+        if ((region_y < 0 || 2 + region_y >= rows) || (region_x < 0 || 2 + region_x >= cols)) {
+            throw new IndexOutOfBoundsException("Region would contain out of bounds");
+        }
+
+        char[][] region = new char[3][3];
+        for (int r = 0; r < 3; r++) {
+            System.arraycopy(grid[r + region_y], region_x, region[r], 0, 3);
+        }
+        return region;
     }
 
     /**
-     * Setter method for SudokuGrid
      * @return SudokuState enum for the following states
      *    <ul>
      *        <li>SudokuState.VALID if a grid has empty space with all cells abiding by Sudoku rules</li>
@@ -82,5 +97,9 @@ public class SudokuGrid {
      */
     SudokuState ValidateGrid() {
        return SudokuState.VALID;
+    }
+
+    public char[][] getGrid() {
+        return grid;
     }
 }
