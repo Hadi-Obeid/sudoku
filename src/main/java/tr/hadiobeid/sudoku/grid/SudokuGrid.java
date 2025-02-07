@@ -1,9 +1,14 @@
 package tr.hadiobeid.sudoku.grid;
 
-import jdk.jshell.spi.ExecutionControl;
-import org.springframework.web.client.HttpServerErrorException;
+import lombok.Getter;
+import tr.hadiobeid.sudoku.reader.InvalidGridDataException;
+import tr.hadiobeid.sudoku.reader.SudokuGridReader;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Represents a grid state of the 9x9 sudoku board
@@ -15,21 +20,48 @@ import java.util.Arrays;
  * </p>
  */
 public class SudokuGrid {
+    @Getter
     private char[][] grid;
+
+    private static final Map<Character, Integer> counter = new HashMap<>();
+
+    /**
+     * Utility method to iterate through a unit in Sudoku.
+     * @param unit A unit of the sudoku puzzle (a row, column, or region) that should contain 9 distinct elements
+     * @return False if unit is valid (i.e. no repeating digits), True if invalid
+     */
+    private static boolean isUnitInvalid(char[] unit) {
+        counter.clear();
+        for (char c : unit) {
+            if (c != '0')
+                if (counter.containsKey(c)) {
+                    return true;
+                } else {
+                    counter.put(c, counter.getOrDefault(c, 1));
+                }
+        }
+        return false;
+    }
     // Grid must be 9x9
     final int rows = 9;
     final int cols = 9;
 
     /**
-     * Constructor that generates a grid with default value 0
-     * @return a sudoku grid where each value is '0', representing an empty cell
+     * Constructor that generates a grid with default value of 0
      */
     SudokuGrid() {
        this.grid = new char[9][9];
-       for (int row = 0; row < 9; row++) {
+       for (int row = 0; row < rows; row++) {
            Arrays.fill(this.grid[row], '0');
        }
+    }
 
+    SudokuGrid(char[][] grid) {
+        this.grid = grid;
+    }
+
+    public static SudokuGrid fromFile(SudokuGridReader reader, String filename) throws IOException, InvalidGridDataException {
+        return new SudokuGrid(reader.readFromFile());
     }
 
     /**
@@ -56,18 +88,20 @@ public class SudokuGrid {
     public void setCell(int row, int col, char value) throws IllegalArgumentException, IndexOutOfBoundsException {
         if (row < 0 || row >= rows || col < 0 || col >= cols) {
             throw new IndexOutOfBoundsException("Row or col out of bounds");
-        } else if (value <= '0' || value >= '9') {
+        } else if (value < '0' || value > '9') {
             throw new IllegalArgumentException("Attempting to assign invalid value");
         }
         grid[row][col] = value;
     }
 
+
+
     /**
      * Get a corresponding 3x3 region of a cell
-     * @return A corresponding 3x3 region for a cell at row, col (including cell at row, col)
+     * @return A corresponding 3x3 region for a cell at row, col (including cell at row, col) as a 1D array
      * @throws IndexOutOfBoundsException if values of row and col would lead to invalid index
      */
-    public char[][] getRegion(int row, int col) throws IndexOutOfBoundsException {
+    public char[] getRegion(int row, int col) throws IndexOutOfBoundsException {
         // get coordinates of region (top left corner)
         int region_x = (col / 3) * 3;
         int region_y = (row / 3) * 3;
@@ -80,28 +114,70 @@ public class SudokuGrid {
             throw new IndexOutOfBoundsException("Region would contain out of bounds");
         }
 
-        char[][] region = new char[3][3];
+        char[] region = new char[9];
         for (int r = 0; r < 3; r++) {
-            System.arraycopy(grid[r + region_y], region_x, region[r], 0, 3);
+            System.arraycopy(grid[r + region_y], region_x, region, r * 3, 3);
         }
         return region;
     }
+
+    /**
+     * Gets all 9 3x9 regions in sudoku board
+     * @return Array of 3x3 regions
+     */
+    public char[][] getRegions() {
+        return new char[][] {
+                getRegion(0,0), getRegion(0, 3), getRegion(0, 6),
+                getRegion(3,0), getRegion(3, 3), getRegion(3, 6),
+                getRegion(6,0), getRegion(6, 3), getRegion(6, 6),
+        };
+    }
+
+
 
     /**
      * Checks if a grid is complete (no unfilled spaces)
      * @return If there exists any unfilled spaces ('0') in grid
      */
     public boolean isComplete() {
-
         return Arrays.stream(grid).noneMatch(row -> new String(row).indexOf('0') != -1);
     }
 
     /**
      *
-     * @return If a grid contains any invalid numbers
+     * @return True If a grid contains only valid numbers, false otherwise
      */
-    private boolean gridIsInvalid() {
-        return false;
+    private boolean gridIsValid() {
+        // Get regions
+        char[][] regions = getRegions();
+
+        // Validate rows ensuring that no two numbers in the range 1-9 repeat twice
+
+        //Map<Character, Integer> counter = new HashMap<>();
+
+        for (char[] row : grid) {
+            if (isUnitInvalid(row)) return false;
+        }
+
+        //counter = new HashMap<>();
+
+        // It is slow to iterate through coloumns
+        for (int col = 0; col < cols; col++) {
+            char[] column = new char[9];
+
+            for (int row = 0; row < rows; row++) {
+                column[row] = grid[row][col];
+
+            }
+            if (isUnitInvalid(column)) return false;
+        }
+
+        // Check regions
+        for (char[] region : regions) {
+            if (isUnitInvalid(region)) return false;
+        }
+
+        return true;
     }
 
     /**
@@ -112,8 +188,8 @@ public class SudokuGrid {
      *        <li>SudokuState.Solved if the grid is valid and has no empty space, therefore it is basically solved</li>
      *    </ul>
      */
-    public SudokuState ValidateGrid() {
-        if (this.gridIsInvalid()) {
+    public SudokuState validateGrid() {
+        if (!this.gridIsValid()) {
             return SudokuState.INVALID;
         }
 
@@ -124,7 +200,4 @@ public class SudokuGrid {
     }
 
 
-    public char[][] getGrid() {
-        return grid;
-    }
 }
