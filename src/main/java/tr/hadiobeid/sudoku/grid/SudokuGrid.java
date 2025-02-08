@@ -49,7 +49,7 @@ public class SudokuGrid {
     /**
      * Constructor that generates a grid with default value of 0
      */
-    SudokuGrid() {
+    public SudokuGrid() {
        this.grid = new char[9][9];
        for (int row = 0; row < rows; row++) {
            Arrays.fill(this.grid[row], '0');

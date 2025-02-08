@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SudokuBasicReader extends GenericSudokuReader implements SudokuGridReader {
+public class SudokuBasicReader extends SudokuGridReader {
     public static final String BEAN_ID = "sudokuBasicReader";
 
     SudokuBasicReader() { super(); }

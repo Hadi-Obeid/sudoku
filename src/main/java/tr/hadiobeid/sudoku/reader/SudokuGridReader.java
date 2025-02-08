@@ -1,5 +1,7 @@
 package tr.hadiobeid.sudoku.reader;
 
+import lombok.Setter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,7 +16,10 @@ import java.util.ArrayList;
  *
  */
 
-public interface SudokuGridReader {
+@Setter
+public abstract class SudokuGridReader {
+
+    String filename;
 
     /**
      * Read a single Sudoku Grid from a file
@@ -33,4 +38,29 @@ public interface SudokuGridReader {
      */
     public abstract ArrayList<char[][]> readAllFromFile() throws IOException, InvalidGridDataException;
 
+
+    /*
+    @PostConstruct
+    void setUp(String filename) {
+        this.filename = filename;
+    }
+
+     */
+
+    SudokuGridReader(String filename) {
+        this.filename = filename;
+    }
+
+    public SudokuGridReader() {
+
+    }
+
+
+    public void setFilename(String filename) {
+    this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
 }
