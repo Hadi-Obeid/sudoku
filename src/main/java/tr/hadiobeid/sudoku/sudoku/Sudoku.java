@@ -26,6 +26,4 @@ public class Sudoku {
         this.solution = solver.solve(givens);
     }
 
-
-
 }

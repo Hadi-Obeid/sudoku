@@ -1,14 +1,9 @@
 package tr.hadiobeid.sudoku.grid;
 
 import lombok.Getter;
-import tr.hadiobeid.sudoku.reader.InvalidGridDataException;
-import tr.hadiobeid.sudoku.reader.SudokuGridReader;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * Represents a grid state of the 9x9 sudoku board
@@ -21,7 +16,7 @@ import java.util.stream.Stream;
  */
 public class SudokuGrid {
     @Getter
-    private char[][] grid;
+    private final char[][] grid;
 
     private static final Map<Character, Integer> counter = new HashMap<>();
 
@@ -58,10 +53,6 @@ public class SudokuGrid {
 
     SudokuGrid(char[][] grid) {
         this.grid = grid;
-    }
-
-    public static SudokuGrid fromFile(SudokuGridReader reader, String filename) throws IOException, InvalidGridDataException {
-        return new SudokuGrid(reader.readFromFile());
     }
 
     /**
@@ -161,7 +152,7 @@ public class SudokuGrid {
 
         //counter = new HashMap<>();
 
-        // It is slow to iterate through coloumns
+        // It is slow to iterate through columns
         for (int col = 0; col < cols; col++) {
             char[] column = new char[9];
 

@@ -2,8 +2,6 @@ package tr.hadiobeid.sudoku.reader;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SudokuJSONReader extends SudokuGridReader {
-    public static final String BEAN_ID = "sudokuJSONReader";
 
     SudokuJSONReader() { super(); }
 

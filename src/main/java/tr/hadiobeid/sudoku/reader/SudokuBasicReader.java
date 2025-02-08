@@ -1,9 +1,5 @@
 package tr.hadiobeid.sudoku.reader;
 
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class SudokuBasicReader extends SudokuGridReader {
-    public static final String BEAN_ID = "sudokuBasicReader";
 
     SudokuBasicReader() { super(); }
 

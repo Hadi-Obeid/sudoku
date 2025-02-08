@@ -1,5 +1,6 @@
 package tr.hadiobeid.sudoku.reader;
 
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
  * </li>
  *
  */
-
 @Setter
+@Getter
 public abstract class SudokuGridReader {
 
     String filename;
@@ -39,14 +40,6 @@ public abstract class SudokuGridReader {
     public abstract ArrayList<char[][]> readAllFromFile() throws IOException, InvalidGridDataException;
 
 
-    /*
-    @PostConstruct
-    void setUp(String filename) {
-        this.filename = filename;
-    }
-
-     */
-
     SudokuGridReader(String filename) {
         this.filename = filename;
     }
@@ -56,11 +49,4 @@ public abstract class SudokuGridReader {
     }
 
 
-    public void setFilename(String filename) {
-    this.filename = filename;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
 }
