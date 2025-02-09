@@ -37,8 +37,9 @@ class BacktrackingSudokuSolverTest {
         System.out.println("Grid to solve: ");
         System.out.println(easy_grid);
 
+        SudokuGrid solution = solver.solve(easy_grid);
 
-        assertEquals(SudokuState.VALID, solver.solve(easy_grid).validateGrid());
+        assertTrue(solution.isSolved());
 
     }
 
@@ -50,7 +51,7 @@ class BacktrackingSudokuSolverTest {
 
         SudokuGrid solution = solver.solve(easy_grid);
         System.out.println(solution);
-        assertEquals(SudokuState.VALID, solution.validateGrid());
+        assertTrue(solution.isSolved());
 
     }
 
@@ -61,8 +62,9 @@ class BacktrackingSudokuSolverTest {
 
         System.out.println("Grid to solve: ");
         System.out.println(easy_grid);
+        SudokuGrid solution = solver.solve(easy_grid);
 
-        assertEquals(SudokuState.VALID, solver.solve(easy_grid).validateGrid());
+        assertTrue(solution.isSolved());
 
     }
 
@@ -78,8 +80,36 @@ class BacktrackingSudokuSolverTest {
         SudokuGrid solution = solver.solve(easy_grid);
         System.out.println(solution);
 
-        assertEquals(SudokuState.VALID, solution.validateGrid());
+        assertTrue(solution.isSolved());
 
     }
 
+    @Test
+    void solverSolvesRealGrid() {
+        SudokuGrid easy_grid = new SudokuGrid(grids.get(3));
+
+        System.out.println("Grid to solve: ");
+        System.out.println(easy_grid);
+
+        SudokuGrid solution = solver.solve(easy_grid);
+        System.out.println(solution);
+
+        assertTrue(solution.isSolved());
+
+    }
+
+
+    @Test
+    void solverSolvesHardGrid() {
+        SudokuGrid grid = new SudokuGrid(grids.get(4));
+
+        System.out.println("Grid to solve: ");
+        System.out.println(grid);
+
+        SudokuGrid solution = solver.solve(grid);
+        System.out.println(solution);
+
+        assertTrue(solution.isSolved());
+
+    }
 }

@@ -199,4 +199,8 @@ public class SudokuGrid {
         }
         return sb.toString();
     }
+
+    public boolean isSolved() {
+        return isComplete() && (validateGrid() == SudokuState.VALID);
+    }
 }
