@@ -38,8 +38,8 @@ public class SudokuGrid {
         return false;
     }
     // Grid must be 9x9
-    final int rows = 9;
-    final int cols = 9;
+    public final int rows = 9;
+    public final int cols = 9;
 
     /**
      * Constructor that generates a grid with default value of 0
@@ -51,7 +51,7 @@ public class SudokuGrid {
        }
     }
 
-    SudokuGrid(char[][] grid) {
+    public SudokuGrid(char[][] grid) {
         this.grid = grid;
     }
 
@@ -184,11 +184,19 @@ public class SudokuGrid {
             return SudokuState.INVALID;
         }
 
-        if (this.isComplete()) {
-            return SudokuState.SOLVED;
-        }
         return SudokuState.VALID;
     }
 
-
+    // The usual
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                sb.append(grid[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

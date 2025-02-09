@@ -23,7 +23,7 @@ public class Sudoku {
     public Sudoku(SudokuGrid givens, SudokuSolver solver) {
         this.givens = givens;
         this.solver = solver;
-        this.solution = solver.solve(givens);
+        //this.solution = solver.solve(givens);
     }
 
 }

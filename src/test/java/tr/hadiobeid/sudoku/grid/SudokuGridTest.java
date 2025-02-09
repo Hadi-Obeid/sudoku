@@ -6,7 +6,6 @@ import tr.hadiobeid.sudoku.reader.SudokuGridReader;
 import tr.hadiobeid.sudoku.reader.SudokuGridReaderFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -382,7 +381,7 @@ class SudokuGridTest {
         var sudokuGrids = reader.readAllFromFile();
         assertNotNull(sudokuGrids);
         SudokuGrid solved = new SudokuGrid(sudokuGrids.get(2));
-        assertEquals(SudokuState.SOLVED, solved.validateGrid());
+        assertEquals(SudokuState.VALID, solved.validateGrid());
 
     }
 
