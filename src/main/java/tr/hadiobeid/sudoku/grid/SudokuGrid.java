@@ -176,7 +176,6 @@ public class SudokuGrid {
      *    <ul>
      *        <li>SudokuState.VALID if a grid has empty space with all cells abiding by Sudoku rules</li>
      *        <li>SudokuState.INVALID if there are invalid cells (such as two of the same number in a 3x3 area)</li>
-     *        <li>SudokuState.Solved if the grid is valid and has no empty space, therefore it is basically solved</li>
      *    </ul>
      */
     public SudokuState validateGrid() {

@@ -35,15 +35,12 @@ public class BacktrackingSudokuSolver extends SudokuSolver {
     }
     /**
      * @param grid sudoku grid
-     * @param row y coordinate of next move
-     * @param col x coordinate of next move
      * @return grid if solved (base case), otherwise do recursion
      */
     public boolean solve(SudokuGrid grid, char move) {
         int[] next_move_pos = getEmptyCell(grid);
         if (next_move_pos == null) {
             return true;
-
         } else {
             int row = next_move_pos[0], col = next_move_pos[1];
             for (char i = '1'; i <= '9'; i++) {
@@ -62,7 +59,4 @@ public class BacktrackingSudokuSolver extends SudokuSolver {
 
     }
 
-    private void getSolution(char[][] board) {
-
-    }
 }
