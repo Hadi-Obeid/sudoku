@@ -69,6 +69,10 @@ public class SudokuGrid {
         return grid[row][col];
     }
 
+    public char[][]getGrid() {
+        return grid;
+    }
+
     /**
      * Setter method for SudokuGrid
      * @param row row in grid from top to bottom

@@ -72,25 +72,57 @@ public class ConstraintMatrix {
 
     }
 
+
+    /**
+     * Covers the references to a row in a constraint matrix, disabling it
+     * @param rowIndex index of row to disable
+     */
+    public void disable(int rowIndex) {
+        MatrixNode curNode = rows.get(rowIndex);
+        do {
+            // Prevent disabling the same node twice
+            if (curNode.down != curNode) {
+                curNode.down.up = curNode;
+                curNode.up.down = curNode.down;
+                curNode.down = curNode;
+                curNode.up = curNode;
+                curNode.head.size -= 1; // Decrement size of column header
+            }
+            curNode = curNode.right;
+        } while (curNode != rows.get(rowIndex));
+    }
+
+    /**
+     * Uncovers the references to a row in a constraint matrix, enabling it
+     * @param rowIndex index of row to enable
+     */
+    public void enable(int rowIndex) {
+        MatrixNode curNode = rows.get(rowIndex);
+        do {
+            // Prevent disabling the same node twice
+            if (curNode.down == curNode) {
+                curNode.down = curNode.head;
+                curNode.up = curNode.head.up;
+                curNode.down.up = curNode;
+                curNode.up.down = curNode;
+                curNode.head.size += 1; // Decrement size of column header
+            }
+            curNode = curNode.right;
+        } while (curNode != rows.get(rowIndex));
+    }
+
+    MatrixNode getNode(int rowIndex, int colIndex) {
+        MatrixNode curNode = rows.get(rowIndex);
+        do {
+            if (curNode.head == columns.get(colIndex)) {
+                return curNode;
+            }
+            curNode = curNode.right;
+        } while (curNode != rows.get(rowIndex));
+
+        return null;
+    }
     MatrixNode getRoot() {
         return root;
     }
-
-    public boolean findAtIndex(int row, int col) {
-        MatrixNode rowStart = rows.get(row);
-        MatrixNodeHeader colHeader = (MatrixNodeHeader) columns.get(col);
-        if (row < 0 || col < 0) return false;
-        if (row > rows.size() - 1 || col > columns.size() - 1) return false;
-
-        MatrixNode node = rowStart;
-        for (int i = 0; i < col; i++) {
-            if (node.head == columns.get(col)) {
-                return true;
-            }
-            node = node.right;
-        }
-        return false;
-
-    }
-
 }

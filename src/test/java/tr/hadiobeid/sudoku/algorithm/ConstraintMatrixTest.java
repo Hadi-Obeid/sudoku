@@ -54,7 +54,54 @@ class ConstraintMatrixTest {
         matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.getFirst());
 
         assertEquals(matrix.columns.getFirst().up, matrix.columns.getFirst().down.down);
+    }
 
+    @Test
+    void shouldDisableRow() {
+        var matrix = new ConstraintMatrix();
+        for (int i = 0; i < 3; i++) {
+            matrix.createHeader();
+        }
+
+        // Create rows 1 and 2, disable row 1
+
+        /*
+            R   A B C
+            0   1 0 1
+            1   0 1 0
+         */
+        var node = matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.getFirst());
+        matrix.createDetail(node, (MatrixNodeHeader) matrix.columns.getLast());
+        matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.get(1));
+        assertEquals(matrix.columns.getFirst().down.left, matrix.columns.getLast().down);
+
+        matrix.disable(0);
+        assertEquals(0, matrix.columns.getFirst().getSize());
+        assertEquals(0, matrix.columns.getLast().getSize());
+    }
+
+    @Test
+    void shouldEnableRow() {
+        var matrix = new ConstraintMatrix();
+        for (int i = 0; i < 3; i++) {
+            matrix.createHeader();
+        }
+
+        // Create rows 1 and 2, disable row 1
+
+        /*
+            R   A B C
+            0   1 0 1
+            1   0 1 0
+         */
+        var node = matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.getFirst());
+        matrix.createDetail(node, (MatrixNodeHeader) matrix.columns.getLast());
+        matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.get(1));
+
+        matrix.disable(0);
+        matrix.enable(0);
+        assertEquals(1, matrix.columns.getFirst().getSize());
+        assertEquals(1, matrix.columns.getLast().getSize());
     }
 
 
