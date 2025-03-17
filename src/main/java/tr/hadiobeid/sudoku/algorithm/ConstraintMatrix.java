@@ -57,8 +57,6 @@ public class ConstraintMatrix {
         } else {
             newNode.left = newNode;
             newNode.right = newNode;
-        }
-        if (head == columns.getFirst()) {
             rows.add(newNode);
         }
         newNode.head = head;
@@ -111,18 +109,40 @@ public class ConstraintMatrix {
         } while (curNode != rows.get(rowIndex));
     }
 
-    MatrixNode getNode(int rowIndex, int colIndex) {
-        MatrixNode curNode = rows.get(rowIndex);
-        do {
-            if (curNode.head == columns.get(colIndex)) {
-                return curNode;
-            }
-            curNode = curNode.right;
-        } while (curNode != rows.get(rowIndex));
+    MatrixNode getNode(int rowIndex, int colIndex) throws IndexOutOfBoundsException {
+        try {
+            MatrixNode curNode = rows.get(rowIndex);
+            do {
+                if (curNode.head == columns.get(colIndex)) {
+                    return curNode;
+                }
+                curNode = curNode.right;
+            } while (curNode != rows.get(rowIndex));
 
-        return null;
+            return null;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
     MatrixNode getRoot() {
         return root;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int r = 0; r < rows.size(); r++) {
+            for (int c = 0; c < columns.size(); c++) {
+                MatrixNode curNode = getNode(r, c);
+                if (curNode != null) {
+                    sb.append("1");
+                } else {
+                    sb.append("0");
+                }
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

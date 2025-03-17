@@ -38,9 +38,11 @@ public class LatinSquare {
                 for (int num = 0; num < n; num++) {
                     System.out.println((num+1) + " at (" + col + ", " + row + ")");
                     int constraint_location = (n * col) + row;
-                    int constraint_row = (n * n) + row + (n * num);
-                    var node = matrix.createDetail(null, matrix.columns.get((n * col) + row));
-                    matrix.createDetail(node, matrix.columns.get(constraint_row));
+                    int constraint_row = (n * n) + (n * num) + row;
+                    int constraint_col = (2 * (n * n)) + (n * num) + col;
+                    var node = matrix.createDetail(null, matrix.columns.get(constraint_location));
+                    node = matrix.createDetail(node, matrix.columns.get(constraint_row));
+                    matrix.createDetail(node, matrix.columns.get(constraint_col));
                 }
             }
         }

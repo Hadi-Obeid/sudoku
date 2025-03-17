@@ -86,6 +86,7 @@ class ConstraintMatrixTest {
         for (int i = 0; i < 3; i++) {
             matrix.createHeader();
         }
+        assertEquals(3, matrix.columns.size());
 
         // Create rows 1 and 2, disable row 1
 
@@ -102,6 +103,34 @@ class ConstraintMatrixTest {
         matrix.enable(0);
         assertEquals(1, matrix.columns.getFirst().getSize());
         assertEquals(1, matrix.columns.getLast().getSize());
+    }
+
+    @Test
+    void shouldGetNode() {
+
+        var matrix = new ConstraintMatrix();
+        for (int i = 0; i < 3; i++) {
+            matrix.createHeader();
+        }
+
+        // Create rows 1 and 2, disable row 1
+
+        /*
+            R   A B C
+            0   1 0 1
+            1   0 1 0
+         */
+        var node = matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.getFirst());
+        matrix.createDetail(node, (MatrixNodeHeader) matrix.columns.getLast());
+        node = matrix.createDetail(null, (MatrixNodeHeader) matrix.columns.get(1));
+        matrix.createDetail(node, (MatrixNodeHeader) matrix.columns.get(0));
+
+        assertEquals(matrix.columns.getFirst().down, matrix.getNode(0,0));
+        assertEquals(matrix.columns.getLast().down, matrix.getNode(0,2));
+        assertEquals(matrix.columns.get(1).down, matrix.getNode(1,1));
+        assertEquals(matrix.columns.get(0).down.down, matrix.getNode(1,0));
+        assertNull(matrix.getNode(0,1));
+
     }
 
 
