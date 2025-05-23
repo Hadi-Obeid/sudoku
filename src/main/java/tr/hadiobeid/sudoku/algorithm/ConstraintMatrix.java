@@ -70,6 +70,24 @@ public class ConstraintMatrix {
 
     }
 
+    MatrixNode createDetail(int index) throws IndexOutOfBoundsException {
+        // Easier to work with, appends to the "bottom end" of a column
+        MatrixNodeHeader head = columns.get(index);
+
+        MatrixNode curNode = head.up;
+        if (curNode == head)
+            return createDetail(null, head);
+        else {
+            while (curNode.down != head) {
+                if (curNode.down == head) {
+                    return createDetail(curNode, head);
+                }
+                curNode = curNode.down;
+            }
+            return createDetail(curNode, head);
+        }
+    }
+
 
     /**
      * Covers the references to a row in a constraint matrix, disabling it
@@ -124,9 +142,11 @@ public class ConstraintMatrix {
             return null;
         }
     }
+
     MatrixNode getRoot() {
         return root;
     }
+
 
     @Override
     public String toString() {

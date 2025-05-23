@@ -133,5 +133,38 @@ class ConstraintMatrixTest {
 
     }
 
+    @Test
+    void shouldInsertImproved() {
+        var matrix = new ConstraintMatrix();
+
+        matrix.createHeader();
+        matrix.createHeader();
+
+        matrix.createDetail(0);
+        matrix.createDetail(0);
+
+        assertNotNull(matrix.getNode(0,0));
+        assertNotNull(matrix.getNode(1,0));
+
+    }
+
+    @Test
+    void shouldValidateSolvedMatrix() {
+        var matrix = new ConstraintMatrix();
+
+        for (int i = 0; i < 3; i++) {
+            matrix.createHeader();
+        }
+
+        // A solved constraint matrix should look like this
+        /*
+            R   A B C
+            0   1 0 0
+            1   0 1 0
+            2   0 0 1
+         */
+
+    }
+
 
 }

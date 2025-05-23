@@ -30,6 +30,7 @@ public class DLSolver {
         return h;
     }
     boolean solve() {
+
         if (isSolved()) {
             return true;
         } else {
@@ -40,5 +41,6 @@ public class DLSolver {
 
 
         }
+        return false;
     }
 }
